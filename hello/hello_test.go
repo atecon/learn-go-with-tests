@@ -52,3 +52,40 @@ func TestHelloSub(t *testing.T) {
 		assertCorrectMessage(t, got, want)
 	})
 }
+
+func TestgreetingPrefix(t *testing.T) {
+	assertCorrectMessage := func(t *testing.T, got, want string) {
+		// tell the test suite that this method is a helper
+		// when it fails the line number reported will be in our function
+		// call rather than inside our test helper.
+		t.Helper()
+
+		if got != want {
+			t.Errorf("got %q, want %q", got, want)
+		}
+	}
+
+	t.Run("default case", func(t *testing.T) {
+		got := greetingPrefix("")
+		want := "Hello, "
+		assertCorrectMessage(t, got, want)
+	})
+
+	t.Run("english default case", func(t *testing.T) {
+		got := greetingPrefix("English")
+		want := "Hello, "
+		assertCorrectMessage(t, got, want)
+	})
+
+	t.Run("in Spanish", func(t *testing.T) {
+		got := greetingPrefix("Spanish")
+		want := "Hola, "
+		assertCorrectMessage(t, got, want)
+	})
+
+	t.Run("in French", func(t *testing.T) {
+		got := greetingPrefix("French")
+		want := "Bonjour, "
+		assertCorrectMessage(t, got, want)
+	})
+}

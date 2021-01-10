@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const englishHelloPrefix = "Hello, "
 const spanishHelloPrefix = "Hola, "
@@ -8,21 +10,25 @@ const frenchHelloPrefix = "Bonjour, "
 
 // Hello creates a friendly 'hello'
 func Hello(name string, language string) string {
-	// return fmt.Sprintf("Hello, %s", name) // also works
-
 	if name == "" {
 		name = "World"
 	}
 
-	if language == "Spanish" {
-		return spanishHelloPrefix + name
-	}
+	return greetingPrefix(language) + name
+}
 
-	if language == "French" {
-		return frenchHelloPrefix + name
+// private functions start with a lowercase
+// named return value: creates empty string 'prefix' initially
+func greetingPrefix(language string) (prefix string) {
+	switch language {
+	case "French":
+		prefix = frenchHelloPrefix
+	case "Spanish":
+		prefix = spanishHelloPrefix
+	default:
+		prefix = englishHelloPrefix
 	}
-
-	return englishHelloPrefix + name
+	return
 }
 
 func main() {
