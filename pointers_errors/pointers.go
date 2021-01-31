@@ -1,9 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // Bitcoin is a domain-specific type alias
 type Bitcoin int
+
+var ErrInsufficientFunds = errors.New("Amount cannot exceed balance.")
 
 type Wallet struct {
 	balance Bitcoin
@@ -13,8 +18,13 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
 }
 
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if amount > w.balance {
+		return ErrInsufficientFunds
+	}
+
 	w.balance -= amount
+	return nil
 }
 
 // In the sample script, Wallet is passed as a pointer but that's not needed
