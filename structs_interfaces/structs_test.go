@@ -48,11 +48,12 @@ func TestAreaTDT(t *testing.T) {
 	}
 
 	for _, tt := range areaTests {
-		// tt is a nsted struct
+		// tt is a nested struct
 
 		got := tt.shape.Area()
+		// '%#v' will print out our struct
 		if got != tt.want {
-			t.Errorf("got %g want %g", got, tt.want)
+			t.Errorf("%#v got %g want %g", tt.shape, got, tt.want)
 		}
 	}
 
