@@ -18,7 +18,6 @@ func TestSearch(t *testing.T) {
 		_, err := dict.Search("foo")
 
 		assertError(t, err, ErrNotFound)
-
 	})
 }
 
@@ -36,4 +35,35 @@ func assertString(t testing.TB, got, want string) {
 	if got != want {
 		t.Errorf("got %q but want %q, given %s", got, want, "test")
 	}
+}
+
+func TestAdd(t *testing.T) {
+
+	t.Run("add new key-value pair", func(t *testing.T) {
+		dict := Dictionary{}
+		// var dict = map[string]string{} // won't work as Add() requires type Dictionary
+		key := "test"
+		value := "added valued"
+		dict.Add(key, value)
+
+		want := "added valued"
+		got, error := dict.Search("test")
+
+		assertError(t, error, nil)
+		assertString(t, got, want)
+	})
+
+	t.Run("add already existing key-value pair", func(t *testing.T) {
+		key := "test"
+		dict := Dictionary{key: "added valued"}
+
+		newValue := "new value"
+		dict.AddWithCheck(key, newValue)
+
+		want := "added valued"
+		got, error := dict.Search("test")
+
+		assertError(t, error, nil)
+		assertString(t, got, want)
+	})
 }
