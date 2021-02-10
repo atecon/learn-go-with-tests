@@ -1,15 +1,18 @@
 package main
 
-import (
-	"errors"
-)
-
 type Dictionary map[string]string
 
-var (
-	ErrNotFound  = errors.New("Could not find the key you asked for.")
-	ErrKeyExists = errors.New("Key already exists. Value cannot be overwritten")
+type DictError string
+
+const (
+	ErrNotFound         = DictError("Could not find the key you asked for.")
+	ErrKeyExists        = DictError("Key already exists. Value cannot be overwritten")
+	ErrWordDoesNotExist = DictError("cannot update word because it does not exist")
 )
+
+func (d DictError) Error() string {
+	return string(d)
+}
 
 func (d Dictionary) Search(key string) (string, error) {
 	value, ok := d[key]
@@ -36,4 +39,23 @@ func (d Dictionary) AddWithCheck(key, value string) error {
 	}
 
 	return nil
+}
+
+func (d Dictionary) Update(key, newValue string) error {
+	_, err := d.Search(key)
+
+	switch err {
+	case ErrNotFound:
+		return ErrWordDoesNotExist
+	case nil:
+		d[key] = newValue
+	default:
+		return err
+	}
+
+	return nil
+}
+
+func (d Dictionary) Delete(key string) {
+	delete(d, key)
 }
